@@ -4,7 +4,7 @@
     "title": "rexipe-api",
     "version": "1.0",
     "summary": "rexipe api v1.0",
-    "description": "API for a recipe sharing platform",
+    "description": "API design for a recipe sharing platform",
     "contact": {
       "name": "pixeclouds",
       "url": "https://github.com/pixeclouds"
