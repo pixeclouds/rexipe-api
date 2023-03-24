@@ -18,7 +18,8 @@ app.use(recipeRouter)
 app.use(userRouter)
 
 app.get('/', (req, res) => {
-    res.json("REXIPII is live... ")
+    res.redirect("/api-docs")
+
 })
 
 connectToDB()
