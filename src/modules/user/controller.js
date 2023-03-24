@@ -30,8 +30,6 @@ exports.login = async (req, res ) => {
         let token = await generateToken(user)
 
         res.status(200).json({
-            "message": "Success",
-            "Data": user,
             token
         })
     } catch (err) {
@@ -65,11 +63,8 @@ exports.signup = async (req, res) => {
         //generate token
         let token = await generateToken(user)
 
-        res.status(200).json({
-            "Message": "Success",
-            "user": user,
+        res.status(200).json({ 
             token
-
         })
         
     } catch (err) {

@@ -47,16 +47,14 @@ exports.addRecipe = async(user, recipeId) => {
 }
 
 exports.getPersonal = async(user) => {
-    let result
-    User.findById(user)
-                        .populate("recipeBook")
-                        .exec((err, book) => {
-                            if (err){ return err}
-                            result = book
-                        })
 
-    console.log("persoanl book from repo", result)
-    return result
+    return User.findById(user)
+        .populate("recipeBook")
+        .select("recipeBook")
+        .then(book => {
+            return book
+        } )
+
 }
 
 exports.approveARecipe = async(recipeId) => {

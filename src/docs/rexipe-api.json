@@ -1,0 +1,723 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "rexipe-api",
+    "version": "1.0",
+    "summary": "rexipe api v1.0",
+    "description": "API for a recipe sharing platform",
+    "contact": {
+      "name": "pixeclouds",
+      "url": "https://github.com/pixeclouds"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "local"
+    }
+  ],
+  "paths": {
+    "/user": {
+      "get": {
+        "summary": "",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "user token"
+              }
+            }
+          },
+          "400": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-user",
+        "description": "Sign in user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "",
+        "operationId": "post-user",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "header with user token embedded"
+              }
+            }
+          },
+          "401": {
+            "description": "Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "description": "sign up new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/recipes": {
+      "post": {
+        "summary": "",
+        "operationId": "post-recipes",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example ": {
+                    "value": {
+                      "message": "recipe submitted for approval"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "post a new recipe",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "user token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "x-examples": {
+                  "Example 1": {
+                    "title": "sea ball",
+                    "description": "sea ball recipe",
+                    "ingredients": [
+                      "snails",
+                      "cowpeas"
+                    ],
+                    "category": "dessert"
+                  }
+                },
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "ingredients": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "category": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title",
+                  "description",
+                  "ingredients",
+                  "category"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "recipe"
+        ]
+      },
+      "parameters": []
+    },
+    "/recipes/{page}": {
+      "get": {
+        "summary": "",
+        "tags": [
+          "recipe"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "meta": {
+                      "type": "object"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  }
+                },
+                "examples": {
+                  "Example ": {
+                    "value": {
+                      "meta": {
+                        "page": "3",
+                        "total": "5"
+                      },
+                      "data": [
+                        {
+                          "_id": "4676-dh36",
+                          "title": "sea ball",
+                          "description": "sea ball recipe",
+                          "ingredients": [
+                            "snail",
+                            "cowpeas"
+                          ],
+                          "category": "dessert",
+                          "author": "foodie",
+                          "ratings": "2354"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-recipes",
+        "description": "retrive recipes"
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "page",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    "/recipes/{category}/{page}": {
+      "get": {
+        "summary": "",
+        "tags": [
+          "recipe"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "meta": {
+                      "type": "object"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  }
+                },
+                "examples": {
+                  "Example ": {
+                    "value": {
+                      "meta": {
+                        "page": "3",
+                        "total": "5"
+                      },
+                      "data": [
+                        {
+                          "_id": "4676-dh36",
+                          "title": "sea ball",
+                          "description": "sea ball recipe",
+                          "ingredients": [
+                            "snail",
+                            "cowpeas"
+                          ],
+                          "category": "dessert",
+                          "author": "foodie",
+                          "ratings": "2354"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-filtered-recipes",
+        "description": "retrive filtered recipes"
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "page",
+          "in": "path",
+          "required": true
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "category",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    "/rate/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "",
+        "operationId": "post-rate-_id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example ": {
+                    "value": {
+                      "message": "recipe rated"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "description": "rate a recipe",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "user token"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rating": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 3
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "rating"
+        ]
+      }
+    },
+    "/personal-book": {
+      "get": {
+        "summary": "",
+        "responses": {
+          "200": {
+            "description": "Success\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "string"
+                        },
+                        "total": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  }
+                },
+                "examples": {
+                  "Example ": {
+                    "value": {
+                      "meta": {
+                        "page": "3",
+                        "total": "5"
+                      },
+                      "data": [
+                        {
+                          "_id": "4676-dh36",
+                          "title": "sea ball",
+                          "description": "sea ball recipe",
+                          "ingredients": [
+                            "snail",
+                            "cowpeas"
+                          ],
+                          "category": "dessert",
+                          "author": "foodie",
+                          "ratings": "2354"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-personalbook",
+        "tags": [
+          "personal-book"
+        ],
+        "description": "retrieve your personal book with all the recipes in there",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "user token"
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/personal-book/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "",
+        "operationId": "post-personal-book",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example ": {
+                    "value": {
+                      "message": "recipe added to book"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Add a recipe to your personal book",
+        "tags": [
+          "personal-book"
+        ]
+      }
+    },
+    "/admin/recipes": {
+      "get": {
+        "summary": "",
+        "tags": [
+          "admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "string"
+                        },
+                        "total": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "meta": {
+                        "page": "3",
+                        "total": "5"
+                      },
+                      "data": [
+                        {
+                          "_id": "4676-dh36",
+                          "title": "sea ball",
+                          "description": "sea ball recipe",
+                          "ingredients": [
+                            "snail",
+                            "cowpeas"
+                          ],
+                          "category": "dessert",
+                          "author": "foodie"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-admin",
+        "description": "get all unapproved recipes",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "admin token"
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/admin/approve/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "",
+        "operationId": "post-admin-id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "recipe approved"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "admin"
+        ],
+        "description": "approve a submitted recipe",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "header",
+            "name": "Authorization",
+            "description": "admin token"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {
+      "authorization": {
+        "name": "token",
+        "type": "apiKey",
+        "in": "header"
+      }
+    }
+  }
+}

@@ -18,9 +18,10 @@ exports.getRecipes =  async(req, res) => {
         let result = await getAllRecipes(page)
         
         res.status(200).json({
-            "message": "success",
-            "currentPage":  page,
-            "totalPages": result.totalPages,
+            "meta": {
+                "page": page,
+                "total": result.totalPages
+            },
             "recipes": result.recipes
         })
         
@@ -35,7 +36,7 @@ exports.getRecipes =  async(req, res) => {
 // get filtered recipes
 exports.filterRecipe = async(req, res) => {
     let page = req.params.page || 1
-
+    
     //query definition
     let query = { approved: true}
     if (req.query.category){
@@ -46,10 +47,11 @@ exports.filterRecipe = async(req, res) => {
         let result = await getFiltered(page, query)
 
         res.status(200).json({
-            "message": "Success",
-            "currentPage": result.page,
-            "totalPages": result.totalPages,
-            "Filtered Recipe": result.recipes
+            "meta": {
+                "page": result.page,
+                "total": result.totalPages
+            },
+            "Recipes": result.recipes
         })
     } catch (err) {
         res.status(400).json({
@@ -84,11 +86,10 @@ exports.getPersonalBook = async(req, res) => {
     let user = req.user
 
     try {
-        let result = await getPersonal(user)
+        let { recipeBook } = await getPersonal(user)
 
         res.status(200).json({
-            "Message": "Success",
-            "PersonalBook": result
+            "Recipes": recipeBook
         })
     } catch (error) {
         

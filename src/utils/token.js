@@ -12,14 +12,13 @@ exports.verifyToken = async(token) => {
     try {
         jwt.verify(token, SECRET, (err, payload)=> {
             if (err){
-                console.log("token error", err)
-                throw err
+                console.log("token error", err.message)
+                throw Error(err.message)
             }
-            console.log("payload", payload)
             user = payload
         })
     } catch (err) {
-        throw err
+        throw Error(err)
     }
 
     return user

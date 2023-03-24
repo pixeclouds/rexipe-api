@@ -25,7 +25,7 @@ const userShema = new Schema({
     },
     recipeBook: [{
         type: Schema.Types.String,
-        ref: 'Recipe'
+        ref: 'recipe'
     }],
     createdAt: {
         type: Date,

@@ -11,21 +11,24 @@ const { getRecipes,
 
 
 
-// unprotected routes
-recipeRouter.get("/recipes/filter/:category", filterRecipe)
-
+// recipes routes
 recipeRouter.get("/recipes/:page", getRecipes)
-
-// protected routes
-recipeRouter.get("/recipes/personalbook", userAuthorized, getPersonalBook)
-
-recipeRouter.post("/recipes/personalbook/:id",  userAuthorized, addRecipeToBook)
-
+recipeRouter.get("/recipes/:category/:page", filterRecipe)
 recipeRouter.post("/recipes",  userAuthorized, postRecipe)
 
-recipeRouter.post("/recipes/rating/:id/:rating", userAuthorized, rateRecipe)
 
-recipeRouter.put("/recipes/approve/:id", adminAuthorized, approveRecipe)
+// rating
+recipeRouter.post("/rate/:id/", userAuthorized, rateRecipe)
+
+
+// personal book routes
+recipeRouter.get("/personal-book", userAuthorized, getPersonalBook)
+recipeRouter.post("/personal-book/:id",  userAuthorized, addRecipeToBook)
+
+// admin route
+recipeRouter.put("/admin/recipes", adminAuthorized, approveRecipe)
+recipeRouter.put("/admin/approve/:id", adminAuthorized, approveRecipe)
+
 
 
 

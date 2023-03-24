@@ -17,6 +17,7 @@
     "joi": "^17.7.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",
+    "swagger-ui-express": "^4.6.2",
     "uuid": "^9.0.0"
   }
 }
